@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SRV Media</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="{% static 'css/index.css' %}"></script>
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <h3>Add Investment</h3>
+      <form action="{% url 'mutual_funds_app:investment' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+        <div class="form-group">
+          {{ form.mutual_fund_name }}
+          {{ form.errors.mutual_fund_name }}
+        </div>
+        <div class="form-group">
+          {{ form.investment_amount }}
+          {{ form.errors.investment_amount }}
+        </div>
+        <div class="form-group">
+          {{ form.investment_date }}
+          {{ form.errors.investment_date }}
+        </div>
+        <button class="btn btn-primary form-control" type="submit">SUBMIT</button>
+      </form>
+    </div>
+    <div class="col-md-8">
+      <h3>Investment</h3>
+      <table class="table table-striped">
+        <tr>
+          <th>Fund house</th>
+          <th>Investment Amount</th>
+          <th>Investment Date</th>
+          <th>Units</th>
+          <th>Withdraw Amount</th>
+          <th>Withdraw Date</th>
+        </tr>
+        {% for object in objects %}
+          <tr>
+            <td>{{ object.mutual_fund_name }}</td>
+            <td>{{ object.investment_amount }}</td>
+            <td>{{ object.investment_date }}</td>
+            <td>{{ object.units }}</td>
+            {% if object.withdraw_amount %}
+              <td>{{ object.withdraw_amount }}</td>
+              <td>{{ object.withdraw_date }}</td>
+            {% else %}
+              <td style="background-color: {{ object.back_color }};">{{object.amount}}<td>
+              <a href="{% url 'mutual_funds_app:withdraw' object.id %}">
+                <button class="btn btn-success btn-sm">Withdraw</button>
+              </a>
+            </td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Update User</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+<script type="text/javascript">
+
+</script>
+</html>
